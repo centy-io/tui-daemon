@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package daemon;
+
+// DaemonService provides methods to monitor and control the daemon
+service DaemonService {
+    // GetStatus returns the current status of the daemon
+    rpc GetStatus(StatusRequest) returns (StatusResponse);
+
+    // GetMetrics returns current metrics from the daemon
+    rpc GetMetrics(MetricsRequest) returns (MetricsResponse);
+
+    // Control sends a control command to the daemon
+    rpc Control(ControlRequest) returns (ControlResponse);
+
+    // StreamLogs streams log messages from the daemon
+    rpc StreamLogs(LogsRequest) returns (stream LogEntry);
+}
+
+// StatusRequest is the request for GetStatus
+message StatusRequest {}
+
+// StatusResponse contains the daemon's current status
+message StatusResponse {
+    DaemonState state = 1;
+    string version = 2;
+    uint64 uptime_seconds = 3;
+    string message = 4;
+}
+
+// DaemonState represents the possible states of the daemon
+enum DaemonState {
+    DAEMON_STATE_UNKNOWN = 0;
+    DAEMON_STATE_STARTING = 1;
+    DAEMON_STATE_RUNNING = 2;
+    DAEMON_STATE_STOPPING = 3;
+    DAEMON_STATE_STOPPED = 4;
+    DAEMON_STATE_ERROR = 5;
+}
+
+// MetricsRequest is the request for GetMetrics
+message MetricsRequest {}
+
+// MetricsResponse contains daemon metrics
+message MetricsResponse {
+    double cpu_usage_percent = 1;
+    uint64 memory_bytes = 2;
+    uint64 memory_limit_bytes = 3;
+    uint64 connections_active = 4;
+    uint64 requests_total = 5;
+    uint64 errors_total = 6;
+}
+
+// ControlRequest sends a command to the daemon
+message ControlRequest {
+    ControlCommand command = 1;
+}
+
+// ControlCommand represents available control commands
+enum ControlCommand {
+    CONTROL_COMMAND_UNSPECIFIED = 0;
+    CONTROL_COMMAND_START = 1;
+    CONTROL_COMMAND_STOP = 2;
+    CONTROL_COMMAND_RESTART = 3;
+    CONTROL_COMMAND_RELOAD = 4;
+}
+
+// ControlResponse is the response from a control command
+message ControlResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// LogsRequest configures log streaming
+message LogsRequest {
+    LogLevel min_level = 1;
+    uint32 tail_lines = 2;
+}
+
+// LogLevel represents log severity
+enum LogLevel {
+    LOG_LEVEL_DEBUG = 0;
+    LOG_LEVEL_INFO = 1;
+    LOG_LEVEL_WARN = 2;
+    LOG_LEVEL_ERROR = 3;
+}
+
+// LogEntry is a single log message
+message LogEntry {
+    uint64 timestamp = 1;
+    LogLevel level = 2;
+    string message = 3;
+    string source = 4;
+}

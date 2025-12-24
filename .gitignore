@@ -21,3 +21,14 @@ coverage/
 .claude-container/
 .claude-revert-backup-*/
 eslint-report.json
+
+
+# Added by cargo
+
+/target
+
+# Centy agent state
+.centy/
+
+# IDE settings
+.vscode/

@@ -1,0 +1,29 @@
+[package]
+name = "daemon-controller"
+version = "0.1.0"
+edition = "2021"
+description = "A TUI application to monitor and control a daemon via gRPC"
+authors = []
+license = "MIT"
+
+[dependencies]
+# TUI
+ratatui = "0.29"
+crossterm = "0.28"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# gRPC
+tonic = "0.12"
+prost = "0.13"
+
+# Error handling
+color-eyre = "0.6"
+
+# Utilities
+futures = "0.3"
+chrono = "0.4"
+
+[build-dependencies]
+tonic-build = "0.12"
