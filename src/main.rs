@@ -190,7 +190,7 @@ async fn connect_to_daemon(app: &mut App, client: &mut DaemonClient) {
             refresh_data(app, client).await;
         }
         Err(e) => {
-            app.set_connection_status(ConnectionStatus::Error(format!("Connection failed")));
+            app.set_connection_status(ConnectionStatus::Error("Connection failed".to_string()));
             app.add_log("ERROR", format!("Connection failed: {}", e));
         }
     }

@@ -113,7 +113,8 @@ pub struct App {
     /// gRPC endpoint address
     pub daemon_address: String,
 
-    /// When the app started
+    /// When the app started (reserved for future uptime display)
+    #[allow(dead_code)]
     pub start_time: Instant,
 
     /// Last status message
@@ -223,11 +224,13 @@ impl App {
     }
 
     /// Set a status message to display
+    #[allow(dead_code)]
     pub fn set_status_message(&mut self, message: String) {
         self.status_message = Some(message);
     }
 
     /// Clear the status message
+    #[allow(dead_code)]
     pub fn clear_status_message(&mut self) {
         self.status_message = None;
     }

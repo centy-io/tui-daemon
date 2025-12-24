@@ -5,14 +5,15 @@ use tokio::sync::mpsc;
 
 /// Application events
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub enum Event {
     /// Terminal tick for UI refresh
     Tick,
     /// Keyboard input
     Key(KeyEvent),
-    /// Mouse input
+    /// Mouse input (reserved for future mouse support)
     Mouse(MouseEvent),
-    /// Terminal resize
+    /// Terminal resize (handled automatically by ratatui)
     Resize(u16, u16),
 }
 

@@ -14,9 +14,9 @@ pub fn render_dashboard(frame: &mut Frame, app: &App) {
     let chunks = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(3),  // Header
-            Constraint::Min(10),    // Main content
-            Constraint::Length(3),  // Footer
+            Constraint::Length(3), // Header
+            Constraint::Min(10),   // Main content
+            Constraint::Length(3), // Footer
         ])
         .split(frame.area());
 
@@ -42,7 +42,10 @@ fn render_header(frame: &mut Frame, app: &App, area: Rect) {
                 .add_modifier(Modifier::BOLD),
         ),
         Span::raw(" | "),
-        Span::styled(format!(" {} ", status_text), Style::default().fg(status_color)),
+        Span::styled(
+            format!(" {} ", status_text),
+            Style::default().fg(status_color),
+        ),
         Span::raw(" | "),
         Span::raw(format!(" {} ", app.daemon_address)),
     ]))
@@ -97,7 +100,9 @@ fn render_status_panel(frame: &mut Frame, app: &App, area: Rect) {
                 Span::raw("State: "),
                 Span::styled(
                     app.daemon_state_string(),
-                    Style::default().fg(Color::Green).add_modifier(Modifier::BOLD),
+                    Style::default()
+                        .fg(Color::Green)
+                        .add_modifier(Modifier::BOLD),
                 ),
             ]),
             Line::from(format!("Version: {}", status.version)),
@@ -156,7 +161,8 @@ fn render_metrics_panel(frame: &mut Frame, app: &App, area: Rect) {
 
         // Memory gauge
         let mem_pct = if metrics.memory_limit_bytes > 0 {
-            (metrics.memory_bytes as f64 / metrics.memory_limit_bytes as f64 * 100.0).clamp(0.0, 100.0)
+            (metrics.memory_bytes as f64 / metrics.memory_limit_bytes as f64 * 100.0)
+                .clamp(0.0, 100.0)
         } else {
             0.0
         };
@@ -179,8 +185,8 @@ fn render_metrics_panel(frame: &mut Frame, app: &App, area: Rect) {
         ]);
         frame.render_widget(stats, chunks[2]);
     } else {
-        let no_data = Paragraph::new("No metrics available")
-            .style(Style::default().fg(Color::DarkGray));
+        let no_data =
+            Paragraph::new("No metrics available").style(Style::default().fg(Color::DarkGray));
         frame.render_widget(no_data, inner_area);
     }
 }
@@ -295,8 +301,7 @@ fn render_footer(frame: &mut Frame, app: &App, area: Rect) {
         ])
     };
 
-    let footer = Paragraph::new(keybindings)
-        .block(Block::default().borders(Borders::ALL));
+    let footer = Paragraph::new(keybindings).block(Block::default().borders(Borders::ALL));
 
     frame.render_widget(footer, area);
 }
