@@ -48,10 +48,7 @@ impl DaemonClient {
     pub async fn get_status(
         &mut self,
     ) -> Result<StatusResponse, Box<dyn std::error::Error + Send + Sync>> {
-        let client = self
-            .client
-            .as_mut()
-            .ok_or("Not connected to daemon")?;
+        let client = self.client.as_mut().ok_or("Not connected to daemon")?;
 
         let response = client.get_status(StatusRequest {}).await?;
         Ok(response.into_inner())
@@ -61,10 +58,7 @@ impl DaemonClient {
     pub async fn get_metrics(
         &mut self,
     ) -> Result<MetricsResponse, Box<dyn std::error::Error + Send + Sync>> {
-        let client = self
-            .client
-            .as_mut()
-            .ok_or("Not connected to daemon")?;
+        let client = self.client.as_mut().ok_or("Not connected to daemon")?;
 
         let response = client.get_metrics(MetricsRequest {}).await?;
         Ok(response.into_inner())
@@ -75,10 +69,7 @@ impl DaemonClient {
         &mut self,
         command: ControlCommand,
     ) -> Result<ControlResponse, Box<dyn std::error::Error + Send + Sync>> {
-        let client = self
-            .client
-            .as_mut()
-            .ok_or("Not connected to daemon")?;
+        let client = self.client.as_mut().ok_or("Not connected to daemon")?;
 
         let response = client
             .control(ControlRequest {
