@@ -21,7 +21,7 @@ use ui::render_dashboard;
 const TICK_RATE_MS: u64 = 250;
 
 /// Default daemon address
-const DEFAULT_DAEMON_ADDRESS: &str = "http://[::1]:50051";
+const DEFAULT_DAEMON_ADDRESS: &str = "http://127.0.0.1:50051";
 
 #[tokio::main]
 async fn main() -> Result<()> {
