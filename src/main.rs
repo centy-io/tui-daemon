@@ -124,7 +124,7 @@ async fn handle_key_event(
 ) {
     // Global keybindings
     match code {
-        KeyCode::Char('q') | KeyCode::Char('Q') => {
+        KeyCode::Char('q' | 'Q') => {
             app.quit();
             return;
         }
@@ -140,11 +140,11 @@ async fn handle_key_event(
             app.focus_prev();
             return;
         }
-        KeyCode::Char('c') | KeyCode::Char('C') => {
+        KeyCode::Char('c' | 'C') => {
             connect_to_daemon(app, client).await;
             return;
         }
-        KeyCode::Char('d') | KeyCode::Char('D') => {
+        KeyCode::Char('d' | 'D') => {
             disconnect_from_daemon(app, client);
             return;
         }
