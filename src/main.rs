@@ -191,7 +191,7 @@ async fn connect_to_daemon(app: &mut App, client: &mut DaemonClient) {
         }
         Err(e) => {
             app.set_connection_status(ConnectionStatus::Error("Connection failed".to_string()));
-            app.add_log("ERROR", format!("Connection failed: {}", e));
+            app.add_log("ERROR", format!("Connection failed: {e}"));
         }
     }
 }
@@ -229,7 +229,7 @@ async fn execute_action(app: &mut App, client: &mut DaemonClient) {
             }
         }
         Err(e) => {
-            app.add_log("ERROR", format!("Command failed: {}", e));
+            app.add_log("ERROR", format!("Command failed: {e}"));
         }
     }
 }
@@ -242,7 +242,7 @@ async fn refresh_data(app: &mut App, client: &mut DaemonClient) {
             app.update_status(status);
         }
         Err(e) => {
-            app.add_log("ERROR", format!("Failed to get status: {}", e));
+            app.add_log("ERROR", format!("Failed to get status: {e}"));
         }
     }
 
@@ -252,7 +252,7 @@ async fn refresh_data(app: &mut App, client: &mut DaemonClient) {
             app.update_metrics(metrics);
         }
         Err(e) => {
-            app.add_log("ERROR", format!("Failed to get metrics: {}", e));
+            app.add_log("ERROR", format!("Failed to get metrics: {e}"));
         }
     }
 }

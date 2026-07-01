@@ -27,3 +27,6 @@ chrono = "0.4"
 
 [build-dependencies]
 tonic-build = "0.12"
+
+[lints.clippy]
+uninlined_format_args = "warn"
