@@ -43,7 +43,7 @@ fn render_header(frame: &mut Frame, app: &App, area: Rect) {
         ),
         Span::raw(" | "),
         Span::styled(
-            format!(" {} ", status_text),
+            format!(" {status_text} "),
             Style::default().fg(status_color),
         ),
         Span::raw(" | "),
@@ -154,7 +154,7 @@ fn render_metrics_panel(frame: &mut Frame, app: &App, area: Rect) {
         // CPU gauge
         let cpu_pct = metrics.cpu_usage_percent.clamp(0.0, 100.0);
         let cpu_gauge = Gauge::default()
-            .label(format!("CPU: {:.1}%", cpu_pct))
+            .label(format!("CPU: {cpu_pct:.1}%"))
             .gauge_style(Style::default().fg(Color::Cyan))
             .ratio(cpu_pct / 100.0);
         frame.render_widget(cpu_gauge, chunks[0]);
@@ -319,6 +319,6 @@ fn format_bytes(bytes: u64) -> String {
     } else if bytes >= KB {
         format!("{:.1}KB", bytes as f64 / KB as f64)
     } else {
-        format!("{}B", bytes)
+        format!("{bytes}B")
     }
 }
