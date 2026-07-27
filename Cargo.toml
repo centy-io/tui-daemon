@@ -26,7 +26,7 @@ futures = "0.3"
 chrono = "0.4"
 
 [build-dependencies]
-tonic-build = "0.12"
+tonic-build = "0.14"
 
 [lints.clippy]
 unnested_or_patterns = "warn"
