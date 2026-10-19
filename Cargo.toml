@@ -31,3 +31,4 @@ tonic-build = "0.12"
 [lints.clippy]
 unnested_or_patterns = "warn"
 redundant_clone = "warn"
+uninlined_format_args = "warn"
