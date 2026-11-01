@@ -3,18 +3,14 @@ mod events;
 mod grpc;
 mod ui;
 
-use std::{io, time::Duration};
+use std::time::Duration;
 
 use app::{App, ConnectionStatus};
 use color_eyre::Result;
-use crossterm::{
-    event::{DisableMouseCapture, EnableMouseCapture, KeyCode, KeyModifiers},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
-};
+use crossterm::event::{KeyCode, KeyModifiers};
 use events::{Event, EventHandler};
 use grpc::DaemonClient;
-use ratatui::{backend::CrosstermBackend, Terminal};
+use ratatui::DefaultTerminal;
 use ui::render_dashboard;
 
 /// Tick rate for UI refresh (in milliseconds)
@@ -33,8 +29,9 @@ async fn main() -> Result<()> {
         .nth(1)
         .unwrap_or_else(|| DEFAULT_DAEMON_ADDRESS.to_string());
 
-    // Setup terminal
-    let mut terminal = setup_terminal()?;
+    // Raw mode + alternate screen, plus a panic hook that restores the terminal.
+    // Must run after color_eyre::install() so the eyre hook is wrapped, not replaced.
+    let mut terminal = ratatui::init();
 
     // Create app and run
     let mut app = App::new(daemon_address.clone());
@@ -45,37 +42,14 @@ async fn main() -> Result<()> {
 
     let result = run_app(&mut terminal, &mut app, &mut client).await;
 
-    // Restore terminal
-    restore_terminal(&mut terminal)?;
+    ratatui::restore();
 
     result
 }
 
-/// Setup terminal for TUI
-fn setup_terminal() -> Result<Terminal<CrosstermBackend<io::Stdout>>> {
-    enable_raw_mode()?;
-    let mut stdout = io::stdout();
-    execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
-    let backend = CrosstermBackend::new(stdout);
-    let terminal = Terminal::new(backend)?;
-    Ok(terminal)
-}
-
-/// Restore terminal to normal mode
-fn restore_terminal(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> Result<()> {
-    disable_raw_mode()?;
-    execute!(
-        terminal.backend_mut(),
-        LeaveAlternateScreen,
-        DisableMouseCapture
-    )?;
-    terminal.show_cursor()?;
-    Ok(())
-}
-
 /// Main application loop
 async fn run_app(
-    terminal: &mut Terminal<CrosstermBackend<io::Stdout>>,
+    terminal: &mut DefaultTerminal,
     app: &mut App,
     client: &mut DaemonClient,
 ) -> Result<()> {
